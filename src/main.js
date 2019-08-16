@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex'
 
+import './assets/styles/hotcss/hotcss.js'
+
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
