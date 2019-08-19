@@ -28,16 +28,29 @@ npm run build --report
   3、px2rem.scss使用
     i、在assets里编写main.scss作为全局scss并引入pe2rem.scss
     ii、引入sass-resources-loader
-    iii、修改build/utils.js 将 scss: generateLoaders('sass')修改为
-      scss: generateLoaders('sass')
-        .concat(
-          {
-            loader: 'sass-resources-loader',
-            options: {
-              resources: path.resolve(__dirname, '../src/assets/styles/main.scss')
+    iii、修改build/utils.js 将 scss: generateLoaders('sass') 和 sass:generateLoaders('sass') 修改为
+        sass: generateSassResourceLoader(),
+        scss: generateSassResourceLoader(),
+        function generateSassResourceLoader() {
+          var loaders = [
+            cssLoader,
+            'sass-loader',
+            {
+              loader: 'sass-resources-loader',
+              options: {
+                resources: path.resolve(__dirname, '../src/assets/styles/main.scss') // 全局样式文件
+              }
             }
+          ];
+          if (options.extract) {
+            return ExtractTextPlugin.extract({
+              use: loaders,
+              fallback: 'vue-style-loader'
+            })
+          } else {
+            return ['vue-style-loader'].concat(loaders)
           }
-        )
+        }
 
 # common
 ##样式重置
